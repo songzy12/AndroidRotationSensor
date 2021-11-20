@@ -1,3 +1,4 @@
 # RotationVectorDemo
 
-https://android.googlesource.com/platform/development/+/master/samples/ApiDemos/src/com/example/android/apis/os/RotationVectorDemo.java
+https://developer.android.com/guide/topics/sensors/sensors_motion#sensors-motion-rotate
+ 
