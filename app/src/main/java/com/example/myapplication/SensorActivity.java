@@ -62,14 +62,16 @@ public class SensorActivity extends Activity {
 
     class MyRenderer implements GLSurfaceView.Renderer, SensorEventListener {
         private final float[] mRotationMatrix = new float[16];
-        private final Cube mCube;
+        private final CrossFixed mCrossFixed;
+        private final CrossFloating mCrossFloating;
         private final Sensor mRotationVectorSensor;
 
         public MyRenderer() {
             // find the rotation-vector sensor
             mRotationVectorSensor = mSensorManager.getDefaultSensor(
                     Sensor.TYPE_ROTATION_VECTOR);
-            mCube = new Cube();
+            mCrossFixed = new CrossFixed();
+            mCrossFloating = new CrossFloating();
             // initialize the rotation matrix to identity
             mRotationMatrix[0] = 1;
             mRotationMatrix[4] = 1;
@@ -111,7 +113,8 @@ public class SensorActivity extends Activity {
             // draw our object
             gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
             gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-            mCube.draw(gl);
+            mCrossFixed.draw(gl);
+            mCrossFloating.draw(gl);
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -134,21 +137,19 @@ public class SensorActivity extends Activity {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
 
-        class Cube {
+        class CrossFixed {
             // initialize our cube
             private final FloatBuffer mVertexBuffer;
             private final FloatBuffer mColorBuffer;
             private final ByteBuffer mIndexBuffer;
 
-            public Cube() {
+            public CrossFixed() {
                 final float[] vertices = {
                         0, 0, 0,
                         1, 0, 0,
                         -1, 0, 0,
                         0, 1, 0,
                         0, -1, 0,
-                        0, 0, 1,
-                        0, 0, -1,
                 };
                 final float[] colors = {
                         0, 0, 0, 1,
@@ -156,16 +157,12 @@ public class SensorActivity extends Activity {
                         1, 1, 0, 1,
                         0, 1, 0, 1,
                         0, 0, 1, 1,
-                        1, 0, 1, 1,
-                        1, 1, 1, 1,
                 };
                 final byte[] indices = {
                         0, 1,
                         0, 2,
                         0, 3,
                         0, 4,
-                        0, 5,
-                        0, 6,
                 };
                 ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
                 vbb.order(ByteOrder.nativeOrder());
@@ -190,7 +187,61 @@ public class SensorActivity extends Activity {
                 gl.glShadeModel(GL10.GL_SMOOTH);
                 gl.glVertexPointer(3, GL10.GL_FLOAT, 0, mVertexBuffer);
                 gl.glColorPointer(4, GL10.GL_FLOAT, 0, mColorBuffer);
-                gl.glDrawElements(GL10.GL_LINES, 12, GL10.GL_UNSIGNED_BYTE, mIndexBuffer);
+                gl.glDrawElements(GL10.GL_LINES, 8, GL10.GL_UNSIGNED_BYTE, mIndexBuffer);
+            }
+        }
+
+        class CrossFloating {
+            // initialize our cube
+            private final FloatBuffer mVertexBuffer;
+            private final FloatBuffer mColorBuffer;
+            private final ByteBuffer mIndexBuffer;
+
+            public CrossFloating() {
+                final float[] vertices = {
+                        0, 0, 1,
+                        1, 0, 1,
+                        -1, 0, 1,
+                        0, 1, 1,
+                        0, -1, 1,
+                };
+                final float[] colors = {
+                        0, 0, 0, 1,
+                        1, 0, 0, 1,
+                        1, 1, 0, 1,
+                        0, 1, 0, 1,
+                        0, 0, 1, 1,
+                };
+                final byte[] indices = {
+                        0, 1,
+                        0, 2,
+                        0, 3,
+                        0, 4,
+                };
+                ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
+                vbb.order(ByteOrder.nativeOrder());
+                mVertexBuffer = vbb.asFloatBuffer();
+                mVertexBuffer.put(vertices);
+                mVertexBuffer.position(0);
+
+                ByteBuffer cbb = ByteBuffer.allocateDirect(colors.length * 4);
+                cbb.order(ByteOrder.nativeOrder());
+                mColorBuffer = cbb.asFloatBuffer();
+                mColorBuffer.put(colors);
+                mColorBuffer.position(0);
+
+                mIndexBuffer = ByteBuffer.allocateDirect(indices.length);
+                mIndexBuffer.put(indices);
+                mIndexBuffer.position(0);
+            }
+
+            public void draw(GL10 gl) {
+                gl.glEnable(GL10.GL_CULL_FACE);
+                gl.glFrontFace(GL10.GL_CW);
+                gl.glShadeModel(GL10.GL_SMOOTH);
+                gl.glVertexPointer(3, GL10.GL_FLOAT, 0, mVertexBuffer);
+                gl.glColorPointer(4, GL10.GL_FLOAT, 0, mColorBuffer);
+                gl.glDrawElements(GL10.GL_LINES, 8, GL10.GL_UNSIGNED_BYTE, mIndexBuffer);
             }
         }
     }
