@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.rotationsensor;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

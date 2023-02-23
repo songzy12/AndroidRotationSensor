@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.rotationsensor;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
