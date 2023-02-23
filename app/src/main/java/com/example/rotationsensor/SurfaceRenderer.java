@@ -57,15 +57,18 @@ public class SurfaceRenderer implements GLSurfaceView.Renderer, SensorEventListe
     public void onDrawFrame(GL10 gl) {
         // clear screen
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        // set-up model-view matrix
+        // set up model view matrix
         gl.glMatrixMode(GL10.GL_MODELVIEW);
         gl.glLoadIdentity();
         gl.glTranslatef(0, 0, -3.0f);
-        gl.glMultMatrixf(mRotationMatrix, 0);
-        // draw our object
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+
+        // draw the fixed cross
         mCrossFixed.draw(gl);
+
+        // draw the floating cross
+        gl.glMultMatrixf(mRotationMatrix, 0);
         mCrossFloating.draw(gl);
     }
 
