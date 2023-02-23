@@ -16,9 +16,9 @@ import android.os.Bundle;
  * @see SensorEvent
  * @see SensorManager
  */
-public class SensorActivity extends Activity {
+public class MainActivity extends Activity {
     private GLSurfaceView mGLSurfaceView;
-    private MyRenderer mRenderer;
+    private SurfaceRenderer mRenderer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class SensorActivity extends Activity {
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         // Create our Preview view and set it as the content of our
         // Activity
-        mRenderer = new MyRenderer(sensorManager);
+        mRenderer = new SurfaceRenderer(sensorManager);
         mGLSurfaceView = new GLSurfaceView(this);
         mGLSurfaceView.setRenderer(mRenderer);
         setContentView(mGLSurfaceView);

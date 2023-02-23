@@ -34,6 +34,7 @@ class CrossFloating {
                 0, 3,
                 0, 4,
         };
+
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
         vbb.order(ByteOrder.nativeOrder());
         mVertexBuffer = vbb.asFloatBuffer();

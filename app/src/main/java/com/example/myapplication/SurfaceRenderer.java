@@ -9,14 +9,15 @@ import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class MyRenderer implements GLSurfaceView.Renderer, SensorEventListener {
+public class SurfaceRenderer implements GLSurfaceView.Renderer, SensorEventListener {
+    private SensorManager mSensorManager;
+    private final Sensor mRotationVectorSensor;
     private final float[] mRotationMatrix = new float[16];
+
     private final CrossFixed mCrossFixed;
     private final CrossFloating mCrossFloating;
-    private final Sensor mRotationVectorSensor;
-    private SensorManager mSensorManager;
 
-    public MyRenderer(SensorManager sensorManager) {
+    public SurfaceRenderer(SensorManager sensorManager) {
         // find the rotation-vector sensor
         mSensorManager = sensorManager;
         mRotationVectorSensor = mSensorManager.getDefaultSensor(
